@@ -1,134 +1,232 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpaceX Launches</title>
+    <style>
+        /* Reset some default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: "Arial", sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        #search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #search-form input[type="text"] {
+            padding: 10px;
+            border-radius: 5px 0 0 5px;
+            border: none;
+            width: 300px;
+        }
+
+        #search-form button {
+            padding: 10px;
+            border-radius: 0 5px 5px 0;
+            border: none;
+            background-color: #1db954;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        nav {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #1db954;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button.active {
+            background-color: #0da2b9;
+            /* Change color for the active button */
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button:hover {
+            background-color: #14833b;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #1db954;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: #0da2b9;
+            text-align: center;
+        }
+
+        #launch-filter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            flex-wrap: wrap;
+        }
+
+        #launches {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .launch-card {
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .launch-card:hover {
+            transform: scale(1.05);
+        }
+
+        .launch-card h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #1db954;
+        }
+
+        .launch-card p {
+            margin-bottom: 10px;
+            color: #b3b3b3;
+        }
+
+        .launch-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.8em;
+            color: #b3b3b3;
+            text-align: center;
+        }
+
+        @media (max-width: 980px) {
+            #search-form {
+                flex-direction: column;
+                width: 100%;
+                align-items: center;
+            }
+
+            #search-form input[type="text"] {
+                width: 80%;
+                margin-bottom: 10px;
+                border-radius: 5px;
+            }
+
+            #search-form button {
+                width: 80%;
+                border-radius: 5px;
+                margin: 0;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav a {
+                margin: 5px 0;
+            }
+
+            #launch-filter {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            h2 {
+                margin-top: 20px;
+            }
+
+            #launches {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            #launches {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-
-<style>
-    /* Reset some default browser styles */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        background-color: #121212;
-        color: #ffffff;
-        font-family: "Arial", sans-serif;
-        line-height: 1.6;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    header {
-        margin-bottom: 40px;
-    }
-
-    nav {
-        margin-bottom: 20px;
-    }
-
-    button {
-        background-color: #1db954;
-        color: #ffffff;
-        border: none;
-        padding: 10px 20px;
-        margin: 0 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    button.active {
-        background-color: #0da2b9;
-        /* Change color for the active button */
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    button:hover {
-        background-color: #14833b;
-    }
-
-    h1 {
-        font-size: 2.5em;
-        color: #1db954;
-    }
-
-    #launch-filter {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    #launches {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        width: 100%;
-        max-width: 1200px;
-    }
-
-    .launch-card {
-        background-color: #1f1f1f;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s ease-in-out;
-    }
-
-    .launch-card:hover {
-        transform: scale(1.05);
-    }
-
-    .launch-card h2 {
-        font-size: 1.5em;
-        margin-bottom: 10px;
-        color: #1db954;
-    }
-
-    .launch-card p {
-        margin-bottom: 10px;
-        color: #b3b3b3;
-    }
-
-    footer {
-        margin-top: 40px;
-        font-size: 0.8em;
-        color: #b3b3b3;
-    }
-</style>
 
 <body>
     <header>
         <h1>SpaceX Launches</h1>
     </header>
     <main>
+        <div>
+            <h2>Total Launches: {{ count }}</h2>
+        </div>
         <div id="launch-filter">
             <nav>
-                <a href="{{ url_for('index', filter='all') }}">
+                <a href="{{ url_for('index', filter='', search=search_query) }}">
                     <button class="{% if filter == 'all' or not filter %}active{% endif %}">All</button>
                 </a>
-                <a href="{{ url_for('index', filter='successful') }}">
+                <a href="{{ url_for('index', filter='successful', search=search_query) }}">
                     <button class="{% if filter == 'successful' %}active{% endif %}">Successful</button>
                 </a>
-                <a href="{{ url_for('index', filter='failed') }}">
+                <a href="{{ url_for('index', filter='failed', search=search_query) }}">
                     <button class="{% if filter == 'failed' %}active{% endif %}">Failed</button>
                 </a>
-                <a href="{{ url_for('index', filter='upcoming') }}">
+                <a href="{{ url_for('index', filter='upcoming', search=search_query) }}">
                     <button class="{% if filter == 'upcoming' %}active{% endif %}">Upcoming</button>
                 </a>
             </nav>
-            <div>
-                <p>Total Launches: {{ count }}</p>
+            <div id="search-form">
+                <form action="/" method="get">
+                    <input type="text" name="search" placeholder="Search by rocket name..." value="{{ search_query }}">
+                    <button type="submit">Search</button>
+                </form>
             </div>
         </div>
         <div id="launches">
@@ -137,7 +235,8 @@
                 <a href="{{ url_for('launch', launch_id=launch.id) }}">
                     <h2>{{ launch["name"] }}</h2>
                     <img src="{{ launch['links']['patch']['small'] }}" alt="No pic found">
-                    <p><strong>Date: </strong>{{ launch["date_utc"] }}</p>
+                    <p><strong>Date (UTC): </strong>{{ launch["date_utc"] }}</p>
+                    <p><strong>Date (Local): </strong>{{ launch["date_local"] }}</p>
                     <p><strong>Rocket: </strong>{{ launch["name"] }}</p>
                     {% if launch["success"] %}
                     <p><strong>Status: </strong> Successful </p>

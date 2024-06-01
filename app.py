@@ -8,13 +8,19 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    launch_filter = request.args.get("filter", "all")
+    launch_filter = request.args.get("filter", "")
+    search_query = request.args.get("search", "")
     launches = organize_launch_data_by_category(fetch_launch_data())
+    
     filtered_launches = launches.get(launch_filter, launches["all"])
+    if search_query:
+        filtered_launches = list(filter(lambda launch: search_query.lower() in launch["name"].lower(), filtered_launches))
+    
+    
     for launch in filtered_launches:
         launch["date_utc"] = format_date(launch["date_utc"])
         launch["date_local"] = format_date(launch["date_local"])
-    return render_template("index.html", launches=filtered_launches, filter=launch_filter, count=len(filtered_launches))
+    return render_template("index.html", launches=filtered_launches, filter=launch_filter, count=len(filtered_launches), search_query=search_query)
 
 
 @app.route("/launch/<launch_id>")
