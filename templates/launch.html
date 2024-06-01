@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ launch["name"] }} Details</title>
+</head>
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: 'Arial', sans-serif;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+        /* Ensure positioning context for absolute positioning */
+    }
+
+    header {
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        color: #1db954;
+        text-align: center;
+    }
+
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .launch-card {
+        background-color: #1f1f1f;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        text-align: left;
+        position: relative;
+        /* Ensure positioning context for absolute positioning */
+    }
+
+    .launch-card img {
+        display: block;
+        margin: 0 auto 20px;
+        max-width: 100%;
+        border-radius: 5px;
+    }
+
+    .launch-card p {
+        margin-bottom: 10px;
+    }
+
+    .launch-card ul {
+        padding-left: 20px;
+    }
+
+    .launch-card ul li {
+        margin-bottom: 5px;
+    }
+
+    .launch-card ul li a {
+        color: #1db954;
+        text-decoration: none;
+    }
+
+    .launch-card ul li a:hover {
+        text-decoration: underline;
+    }
+
+    .back-button {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        background-color: #1db954;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #17a946;
+    }
+
+    footer {
+        margin-top: 40px;
+        font-size: 0.8em;
+        color: #b3b3b3;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <header>
+        <h1>{{ launch["name"] }} Details</h1>
+    </header>
+    <main>
+        <div class="launch-card">
+            <h2>{{ launch["name"] }}</h2>
+            <img src="{{ launch['links']['patch']['small'] }}" alt="No image found">
+            <p><strong>Date (UTC):</strong> {{ launch["date_utc"] }}</p>
+            <p><strong>Date (Local):</strong> {{ launch["date_local"] }}</p>
+            <p><strong>Rocket:</strong> {{ launch["rocket"] }}</p>
+            <p><strong>Details:</strong> {{ launch["details"] }}</p>
+            <p><strong>Flight Number: </strong> {{ launch["flight_number"] }}</p>
+            {% if launch["success"] is not none %}
+            <p><strong>Status:</strong> {{ "Successful" if launch["success"] else "Failed" }}</p>
+            {% endif %}
+            <p><strong>Links:</strong></p>
+            <ul>
+                {% if launch["links"]["webcast"] %}
+                <li><a href="{{ launch['links']['webcast'] }}" target="_blank">Webcast</a></li>
+                {% endif %}
+                {% if launch["links"]["article"] %}
+                <li><a href="{{ launch['links']['article'] }}" target="_blank">Article</a></li>
+                {% endif %}
+                {% if launch["links"]["wikipedia"] %}
+                <li><a href="{{ launch['links']['wikipedia'] }}" target="_blank">Wikipedia</a></li>
+                {% endif %}
+            </ul>
+            {% if launch["fairings"]["recovery_attempt"] %}
+            <p><strong>Recovery Attempt: </strong>{{ launch["fairings"]["recovery_attempt"] }}</p>
+            <p><strong>Recovered: </strong>{{ launch["fairings"]["recovered"] }}</p>
+            {% endif %}
+            {% if launch["failures"] %}
+            {% for failure in launch["failures"] %}
+            <p><strong>Failure: </strong></p>
+            <p> - Time: {{ failure["time"] }}</p>
+            <p> - Altitude: {{ failure["altitude"] }}</p>
+            <p> - Reason: {{ failure["reason"] }} </p>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <a href="{{ url_for('index') }}" class="back-button">Back to Home</a>
+    </main>
+    <footer>
+        <p>Data fetched from SpaceX API</p>
+    </footer>
+</body>
+
+</html>
