@@ -51,7 +51,7 @@ def fetch_launch_data():
 
 def organize_launch_data_by_category(launches):
     successful = list(filter(lambda launch: launch["success"], launches))
-    failed = list(filter(lambda launch: not launch["success"], launches))
+    failed = list(filter(lambda launch: not launch["success"] and not launch["upcoming"], launches))
     upcoming = list(filter(lambda launch: launch["upcoming"], launches))
 
     return {
